@@ -23,9 +23,21 @@ libraryDependencies ++= {
     "com.github.japgolly.scalajs-react" %%% "test" % scalaJsReactV % Test
   )
 }
+val reactJSVersion = "15.3.2"
 
-jsDependencies += "org.webjars.npm" % "react" % "0.14.0" % Test / "react-with-addons.js" minified "react-with-addons.min.js" commonJSName "React"
-jsDependencies += "org.webjars.npm" % "react-dom" % "0.14.0" % Test / "react-dom.js" minified "react-dom.min.js" commonJSName "ReactDOM"
+jsDependencies ++= Seq(
+  "org.webjars.bower" % "react" % reactJSVersion
+    /        "react-with-addons.js"
+    minified "react-with-addons.min.js"
+    commonJSName "React",
+
+  "org.webjars.bower" % "react" % reactJSVersion
+    /         "react-dom.js"
+    minified  "react-dom.min.js"
+    dependsOn "react-with-addons.js"
+    commonJSName "ReactDOM")
+
+
 jsDependencies in Test += ProvidedJS / "test-component.js" dependsOn "react-with-addons.js"
 
 sourceGenerators in Compile <+= sourceManaged in Compile map { dir =>
